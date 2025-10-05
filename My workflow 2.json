@@ -1,0 +1,596 @@
+{
+  "name": "My workflow 2",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "1F1JjFdi4c4aeyxO_TGDQLasfg6TvAawmXhQkmBlgTg0",
+          "mode": "list",
+          "cachedResultName": "แบบฟอร์มประเมินสุขภาพก่อนการเทรน (Responses)",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1F1JjFdi4c4aeyxO_TGDQLasfg6TvAawmXhQkmBlgTg0/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1217295188,
+          "mode": "list",
+          "cachedResultName": "Form Responses 1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1F1JjFdi4c4aeyxO_TGDQLasfg6TvAawmXhQkmBlgTg0/edit#gid=1217295188"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        -720,
+        -16
+      ],
+      "id": "a876886b-cd6b-4c13-a44c-b657086571ff",
+      "name": "Google Sheets Trigger",
+      "credentials": {
+        "googleSheetsTriggerOAuth2Api": {
+          "id": "YBKbY7aGOIHqArEN",
+          "name": "Google Sheets Trigger account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "folder",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "1N64Vh__cbugOB77cxaUNsWcXfv9cX3q1",
+          "mode": "list",
+          "cachedResultName": "Trainer n8n",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1N64Vh__cbugOB77cxaUNsWcXfv9cX3q1"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -384,
+        16
+      ],
+      "id": "63d2bfd0-b45b-4b62-9371-03db62332d8d",
+      "name": "Create folder",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "OrcEp05vIay6zyPf",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=คุณคือเทรนเนอร์ส่วนตัว ช่วยคำนวณและสรุปผลสุขภาพของลูกค้าตามข้อมูลนี้ :\nชื่อ : {{ $json[\"Name\"] }}\nเพศ : {{ $json[\"Gender\"] }}\nน้ำหนัก : {{ $json[\"Weight\"] }}\nส่วนสูง : {{ $json[\"Height\"] }}\nระดับกิจกรรม : {{ $json[\"Activity\"] }}\nเป้าหมาย : {{ $json[\"Goal\"] }}\nช่วยคำนวณ BMI, ประมาณค่า TDEE",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        -608,
+        -208
+      ],
+      "id": "59a338a4-8195-479e-ab73-fcae085bc013",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -560,
+        0
+      ],
+      "id": "a9c023a9-78ae-4640-a590-2bf5a24aa919",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "zP4rDqzWjuLgZ7Pb",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json[\"Email\"] }}",
+        "subject": "ออกกำลังกาย",
+        "message": "สวัสดี",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -144,
+        16
+      ],
+      "id": "3c2becf4-5a18-4371-86c1-9bd8b1f4aaa3",
+      "name": "Send a message",
+      "webhookId": "2023d8f3-349c-4287-9cd3-47c8e1b2bbf1",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "l0VBvBBbudnTiqwE",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "83e801f3-1358-459e-a0c4-b6eda08de36d",
+              "name": "Email",
+              "value": "example@gmail.com",
+              "type": "string"
+            },
+            {
+              "id": "881610df-7da9-44f3-9902-1d3c91387d2e",
+              "name": "Kawin20042547@gmail.com",
+              "value": "กวินธิดา จันทร์ล้วน",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -240,
+        -128
+      ],
+      "id": "6302068c-c88b-4313-96cf-785b9f7cd7db",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "66010915687@msu.ac.th",
+          "mode": "list",
+          "cachedResultName": "66010915687@msu.ac.th"
+        },
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.3,
+      "position": [
+        80,
+        -144
+      ],
+      "id": "23e3b635-702d-4167-a82f-4a2450e56639",
+      "name": "Create an event",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "h7uSt5pW2c1xYxJX",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1F1JjFdi4c4aeyxO_TGDQLasfg6TvAawmXhQkmBlgTg0",
+          "mode": "list",
+          "cachedResultName": "แบบฟอร์มประเมินสุขภาพก่อนการเทรน (Responses)",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1F1JjFdi4c4aeyxO_TGDQLasfg6TvAawmXhQkmBlgTg0/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1217295188,
+          "mode": "list",
+          "cachedResultName": "Form Responses 1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1F1JjFdi4c4aeyxO_TGDQLasfg6TvAawmXhQkmBlgTg0/edit#gid=1217295188"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "ชื่อ-นามสกุล": "name",
+            "ส่วนสูง (cm)": "height",
+            "น้ำหนักปัจจุบัน (kg)": "weight"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Timestamp",
+              "displayName": "Timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "ชื่อ-นามสกุล",
+              "displayName": "ชื่อ-นามสกุล",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "อายุ",
+              "displayName": "อายุ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "เพศ",
+              "displayName": "เพศ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "เบอร์ติดต่อ/Line ID",
+              "displayName": "เบอร์ติดต่อ/Line ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "อีเมล (เผื่อส่งผลการเทรนกลับ)",
+              "displayName": "อีเมล (เผื่อส่งผลการเทรนกลับ)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "ส่วนสูง (cm)",
+              "displayName": "ส่วนสูง (cm)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "น้ำหนักปัจจุบัน (kg)",
+              "displayName": "น้ำหนักปัจจุบัน (kg)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "เป้าหมายน้ำหนัก/เป้าหมายรูปร่าง",
+              "displayName": "เป้าหมายน้ำหนัก/เป้าหมายรูปร่าง",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "โรคประจำตัว/อาการบาดเจ็บ",
+              "displayName": "โรคประจำตัว/อาการบาดเจ็บ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "ยาที่ใช้เป็นประจำ (ถ้ามี)",
+              "displayName": "ยาที่ใช้เป็นประจำ (ถ้ามี)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "เวลาตื่น-เวลานอนโดยเฉลี่ย",
+              "displayName": "เวลาตื่น-เวลานอนโดยเฉลี่ย",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "จำนวนมื้ออาหารต่อวัน",
+              "displayName": "จำนวนมื้ออาหารต่อวัน",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "แพ้อาหารหรือไม่",
+              "displayName": "แพ้อาหารหรือไม่",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "เครื่องดื่มที่ดื่มบ่อย",
+              "displayName": "เครื่องดื่มที่ดื่มบ่อย",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "การดื่มน้ำต่อวัน (โดยประมาณ)",
+              "displayName": "การดื่มน้ำต่อวัน (โดยประมาณ)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "ปัจจุบันออกกำลังกายไหม",
+              "displayName": "ปัจจุบันออกกำลังกายไหม",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "ถ้าออกอยู่แล้ว (ประเภท/ความถี่ต่อสัปดาห์)",
+              "displayName": "ถ้าออกอยู่แล้ว (ประเภท/ความถี่ต่อสัปดาห์)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "ประสบการณ์เทรนมาก่อนหรือไม่",
+              "displayName": "ประสบการณ์เทรนมาก่อนหรือไม่",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "เป้าหมายการเทรน (ลดไขมัน/เพิ่มกล้ามฯลฯ)",
+              "displayName": "เป้าหมายการเทรน (ลดไขมัน/เพิ่มกล้ามฯลฯ)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "ระยะเวลาที่ต้องการสมัคร",
+              "displayName": "ระยะเวลาที่ต้องการสมัคร",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "ยินยอมให้เทรนเนอร์เก็บข้อมูลหรือไม่",
+              "displayName": "ยินยอมให้เทรนเนอร์เก็บข้อมูลหรือไม่",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        96,
+        144
+      ],
+      "id": "5d08fb24-6184-4998-9b84-a9b60d209bb7",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "Tp6gNSSHP0L9pme8",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "sendAndWait",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        672,
+        -448
+      ],
+      "id": "a1a67722-376b-4bfd-8bc5-0ea5119eeef4",
+      "name": "Send message and wait for response",
+      "webhookId": "76fa7cab-3853-471b-97cb-8822fc1a6351",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "l0VBvBBbudnTiqwE",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "folderId": "1N64Vh__cbugOB77cxaUNsWcXfv9cX3q1",
+        "title": "n8n"
+      },
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [
+        304,
+        144
+      ],
+      "id": "a590bd89-d843-4ccf-a235-167b74186070",
+      "name": "Create a document",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "46yGtG14F8o1DN8B",
+          "name": "Google Docs account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Google Sheets Trigger": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create folder": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Create folder",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message": {
+      "main": [
+        [
+          {
+            "node": "Create an event",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Create a document",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create an event": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "1c8f4cda-9564-44a0-b376-ccb50c97e72f",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "8938e799707ca444d8c16fc35bdef8a729794a973e361d24d6e2edec92ff0853"
+  },
+  "id": "PYcRl0viZiNPXCVn",
+  "tags": []
+}
